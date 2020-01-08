@@ -10,7 +10,7 @@ def load_user(id):
     return User.query.get(int(id))
 
 
-followers = db.Table('followers',       # association table
+followers = db.Table('followers',       # association table, no data only foreign keys
     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
     )
@@ -53,6 +53,12 @@ class User(UserMixin, db.Model):
     def unfollow(self, user):
         if self.is_following(user):
             self.followed.remove(user)
+
+    def followed_posts(self):               # request posts from all followed users.
+        return Post.query.join(
+            folowers, (followers.c.followed_id == Post.user_id)).filter(
+                followers.c.follower_id == self.id).order_by(
+                    Post.timestamp.desc())
 
 
 class Post(db.Model):
