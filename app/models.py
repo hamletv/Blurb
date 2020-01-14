@@ -40,7 +40,7 @@ class User(UserMixin, db.Model):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
 
-    def __repr__(self):
+    def __repr__(self):                     # method to instruct python how to print objects of User class.
         return '<User {}>'.format(self.username)
 
     def is_following(self, user):
