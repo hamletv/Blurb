@@ -9,10 +9,10 @@ from flask_login import logout_user
 from flask_login import login_required
 from werkzeug.urls import url_parse
 from datetime import datetime
-from app.forms import EditProfileForm, PostForm, ResetPasswordRequestForm, ResetPasswordForm
+from app.forms import EditProfileForm, PostForm, ResetPasswordRequestForm
 from app.models import Post
 from app.email import send_password_reset_email
-
+from app.forms import ResetPasswordForm
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -179,4 +179,4 @@ def reset_password(token):
         db.session.commit()
         flash('Your password has been reset.')
         return redirect(url_for('login'))
-    return render_template('reset_password.html', form=form)    
+    return render_template('reset_password.html', form=form)
