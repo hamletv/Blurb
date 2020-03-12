@@ -15,3 +15,5 @@ class Config(object):
     ADMINS = ['hamlet.villa@gmail.com']
 
     POSTS_PER_PAGE = 25
+
+    LANGUAGES = ['en', 'es']
