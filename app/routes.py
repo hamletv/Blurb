@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, url_for
-from flask import request
+from flask import request, g
 from app import app, db
 from app.forms import RegistrationForm
 from app.forms import LoginForm
@@ -13,7 +13,11 @@ from app.forms import EditProfileForm, PostForm, ResetPasswordRequestForm
 from app.models import Post
 from app.email import send_password_reset_email
 from app.forms import ResetPasswordForm
-from flask_babel import _
+from flask_babel import _, get_locale
+# if new text added, mark with _() or _lg() to update app i18n and l10n with following commands:
+# (venv) $ pybabel extract -F babel.cfg -k _l -o messages.pot .
+# (venv) $ pybabel update -i messages.pot -d app/translations
+
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -96,6 +100,7 @@ def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
+    g.locale = str(get_locale)
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required

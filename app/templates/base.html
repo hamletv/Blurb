@@ -53,4 +53,5 @@
 {% block scripts %}        <!-- add js imports in this block, available to all templates. -->
   {{ super() }}
   {{ moment.include_moment() }}
+  {{ moment.lang(g.locale) }}
 {% endblock %}
