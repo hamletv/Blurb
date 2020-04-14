@@ -1,6 +1,15 @@
 import os, click
 from app import app
 
+# if new text added, mark with _() or _lg() to update app i18n and l10n with following commands:
+# (venv) $ pybabel extract -F babel.cfg -k _l -o messages.pot .
+# (venv) $ pybabel update -i messages.pot -d app/translations
+
+# Add new language command - $ flask translate init <language-code>
+# Update languages after adding language markers - $ flask translate update
+# Compile languages after updating translation files - $ flask translate compile
+
+
 @app.cli.group()
 def translate():    # parent command, base for sub-commands below
     """Translation and localization commands"""
