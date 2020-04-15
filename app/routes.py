@@ -17,6 +17,7 @@ from flask_babel import _, get_locale
 # if new text added, mark with _() or _lg() to update app i18n and l10n with following commands:
 # (venv) $ pybabel extract -F babel.cfg -k _l -o messages.pot .
 # (venv) $ pybabel update -i messages.pot -d app/translations
+from guess_language import guess_language
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -25,6 +26,9 @@ from flask_babel import _, get_locale
 def index():
     form = PostForm()
     if form.validate_on_submit():
+        language = guess_language(form.post.data)
+        if language == 'UNKNOWN' or len(language) > 5:
+            language = ''               # assume unknown language
         post = Post(body=form.post.data, author=current_user)
         db.session.add(post)
         db.session.commit()
