@@ -65,7 +65,7 @@ class User(UserMixin, db.Model):
     def get_reset_password_token(self, expires_in=600):         # generate JWT token as string for convenience
         return jwt.encode({'reset_password': self.id, 'exp': time() + expires_in},
             app.config['SECRET_KEY'], algorithm='HS256').decode('utf8')
-            
+
     @staticmethod
     def verify_reset_password_token(token):         # static method, doesn't receive class (self) as first argument
         try:
@@ -80,6 +80,7 @@ class Post(db.Model):
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    language = db.Column(db.String(5))
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
