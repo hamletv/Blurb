@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, url_for
-from flask import request, g
+from flask import request, g, jsonify
 from app import app, db
 from app.forms import RegistrationForm
 from app.forms import LoginForm
@@ -18,7 +18,7 @@ from flask_babel import _, get_locale
 # (venv) $ pybabel extract -F babel.cfg -k _l -o messages.pot .
 # (venv) $ pybabel update -i messages.pot -d app/translations
 from guess_language import guess_language
-
+from app.translate import translate
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -191,3 +191,12 @@ def reset_password(token):
         flash(_('Your password has been reset.'))
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
+
+@app.route('/translate', methods=['POST'])
+@login_required
+def translate_text():
+    ''' Posts text translation function '''
+    ''' Translation from MS API '''
+    return jsonify({'text': translate(request.form['text'],
+        request.form['source_language'],
+        request.form['dest_language'])})
