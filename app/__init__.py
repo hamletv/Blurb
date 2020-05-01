@@ -14,6 +14,8 @@ from flask_moment import Moment
 from flask_babel import Babel, lazy_gettext as _lg
 
 app = Flask(__name__)
+from app.errors import bp as errors_bp
+app.register_blueprint(errors_bp)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -56,4 +58,4 @@ if not app.debug:
     app.logger.setLevel(logging.INFO)
     app.logger.info('Blurb startup')
 
-from app import routes, models, errors  # imported modules from app package/repo. models to define structure of db
+from app import routes, models  # imported modules from app package/repo. models to define structure of db
