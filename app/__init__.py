@@ -16,6 +16,8 @@ from flask_babel import Babel, lazy_gettext as _lg
 app = Flask(__name__)
 from app.errors import bp as errors_bp
 app.register_blueprint(errors_bp)
+from app.auth import bp as auth_bp
+app.register_blueprint(auth_bp, url_prefix='/auth')
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
