@@ -25,3 +25,14 @@ class EditProfileForm(FlaskForm):
 class PostForm(FlaskForm):
     post = TextAreaField(_lg('Say something'), validators=[DataRequired(), Length(min=1, max=140)])
     submit= SubmitField(_lg('Submit'))
+
+
+class SearchForm(FlaskForm):
+    q = StringField(_lg('Search'), validators=[DataRequired()])
+
+    def __init__(self, *args, **kwargs):
+        if 'formdata' not in kwargs:
+            kwargs['formdata'] = request.kwargs
+        if 'csrf_enabled' not in kwargs:
+            kwargs['csrf_enabled'] = false
+        super(SearchForm, self).__init__(*args, **kwargs)
