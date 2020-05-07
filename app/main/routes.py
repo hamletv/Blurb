@@ -4,7 +4,7 @@ from app.main import bp
 from flask_login import current_user, login_required
 from app.models import User, Post
 from datetime import datetime
-from app.main.forms import EditProfileForm, PostForm
+from app.main.forms import EditProfileForm, PostForm, SearchForm
 from flask_babel import _, get_locale
 # if new text added, mark with _() or _lg() to update app i18n and l10n with following commands:
 # (venv) $ pybabel extract -F babel.cfg -k _l -o messages.pot .
@@ -52,11 +52,12 @@ def user(username):
                             next_url=next_url, prev_url=prev_url)
 
 
-@bp.before_request
+@bp.before_app_request
 def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
+        g.search_form = SearchForm()
     g.locale = str(get_locale)
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])

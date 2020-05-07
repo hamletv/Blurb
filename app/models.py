@@ -33,9 +33,11 @@ class SearchableMixin(object):
 
     @classmethod
     def before_commit(cls, session):
-        session._changes = {'add': list(session.new),
+        session._changes = {
+        'add': list(session.new),
         'update': list(session.dirty),
-        'delete': list(session.deleted)}
+        'delete': list(session.deleted)
+        }
 
     @classmethod
     def after_commit(cls, session):
